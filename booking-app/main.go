@@ -3,7 +3,6 @@ package main //main is a package and we need to runtime with main package
 import (
 	"booking-app/helper"
 	"fmt"
-	"strconv"
 ) //fmt is external function package
 
 var conferenceName string = "Go Conference"
@@ -11,7 +10,16 @@ var conferenceName string = "Go Conference"
 const conferenceTickets int = 50
 
 var remainingTickets uint = 50
-var bookings = make([]map[string]string, 0)
+var bookings = make([]UserData, 0)
+
+//var bookings = make([]map[string]string, 0)
+
+type UserData struct {
+	firstName       string
+	lastName        string
+	email           string
+	numberOfTickets uint
+}
 
 func main() {
 	greetUser()
@@ -76,7 +84,7 @@ func getFirstName() []string {
 	firstNames := []string{}           // slice(array in js)
 	for _, booking := range bookings { // index for showing index in output ex. : index: 1 booking: Nana
 		//var names = strings.Fields(booking) // strings.Fields() = split
-		firstNames = append(firstNames, booking["firstName"])
+		firstNames = append(firstNames, booking.firstName) // for map : booking["firstName"]
 	}
 	return firstNames
 }
@@ -108,11 +116,17 @@ func bookTicket(userTickets uint, firstName string, lastName string, email strin
 	remainingTickets = remainingTickets - userTickets
 	//bookings = append(bookings, firstName+" "+lastName) // append similar array.push in JS
 
-	var userData = make(map[string]string)
-	userData["firstName"] = firstName
-	userData["lastName"] = lastName
-	userData["email"] = email
-	userData["numberOfTickets"] = strconv.FormatUint(uint64(userTickets), 10)
+	var userData = UserData{
+		firstName:       firstName,
+		lastName:        lastName,
+		email:           email,
+		numberOfTickets: userTickets,
+	}
+	// var userData = make(map[string]string)
+	// userData["firstName"] = firstName
+	// userData["lastName"] = lastName
+	// userData["email"] = email
+	// userData["numberOfTickets"] = strconv.FormatUint(uint64(userTickets), 10)
 
 	bookings = append(bookings, userData)
 	fmt.Printf("List of bookings is %v", bookings)
